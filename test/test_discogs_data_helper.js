@@ -1,3 +1,5 @@
+/*jslint node: true */
+
 'use strict';
 
 var chai   = require('chai');
@@ -12,17 +14,3 @@ var subject = new DiscogsDataHelper();
 subject.requestRandomRelease(function(err, obj) {
   console.log(obj);
 });
-
-// describe('DiscogsDataHelper', function() {
-//   var subject = new DiscogsDataHelper();
-
-//   describe('#requestRandomRelease', function() {
-//       it('returns a valid release', function() {
-//         var value = subject.requestRandomRelease(function(err, obj) {
-//           return obj;
-//         });
-
-//         return expect(value).to.eventually.eq("");
-//       });
-//     });
-// });

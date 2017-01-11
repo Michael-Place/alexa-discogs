@@ -15,16 +15,28 @@ module.exports = DiscogsDataHelper;
 var dis = new Discogs({userToken: token});
 
 DiscogsDataHelper.prototype.requestRandomRelease = function(callback) {
-  dis.user().collection().getReleases('mptheapple11', 0, {page: 0, per_page: 50}, function(err, data){
-    var info = data['releases'][15]['basic_information'];
+  dis.user().getProfile(username, function(err, obj){
+    var perPage = 50;
 
-    var response = {
-      "artist" : info['artists'][0]['name'],
-      "album"  : info['title'],
-      "year"   : info['year']
-    };
+    var collectionCount = obj.num_collection;
+    var selection = random(0, collectionCount);
+    console.log("Selected Item #" + selection + '\n');
 
-    callback(err, phraseForRelease(response));
+    var index = (selection % perPage) - 1;
+    var page = Math.floor(selection / perPage);
+    console.log("Located at index " + index + "on page " + page);
+
+    dis.user().collection().getReleases(username, 0, {page: page, per_page: perPage}, function(err, data){
+      var info = data['releases'][index]['basic_information'];
+
+      var response = {
+        "artist" : info['artists'][0]['name'],
+        "album"  : info['title'],
+        "year"   : info['year']
+      };
+
+      callback(err, phraseForRelease(response));
+    });
   });
 };
 
@@ -34,4 +46,8 @@ function phraseForRelease(release) {
     artist : release['artist'],
     year   : release['year']
   });
+}
+
+function random (low, high) {
+    return Math.floor(Math.random() * (high - low) + low);
 }
