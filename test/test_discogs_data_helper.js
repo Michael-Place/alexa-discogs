@@ -11,6 +11,8 @@ chai.config.includeStack = true;
 
 var subject = new DiscogsDataHelper();
 
-subject.requestRandomRelease(function(err, obj) {
+var accessToken = "QaBtwlVLqonAAJpycifrIYzRDswCNOzKRqzxiwBS,WqIbkUfdkkjIHsRcSwLjjJpQzovkInTTYOvJULyE"
+
+subject.requestRandomRelease(accessToken, function(err, obj) {
   console.log(obj);
 });

@@ -17,17 +17,25 @@ app.intent('discogsinfo', {
   'utterances': ['{pick|choose|select|find} {me |} {a|an |} {album|record|vinyl}']
 },
 function(req, res) {
+    // retrieve the access token from the session
+    var accessToken = req.sessionDetails.accessToken
 
-  var discogs = new DiscogsDataHelper();
+    // if we don't have one, end the session and ask the user to link the account
+    if (accessToken === null) {
+        res.linkAccount().shouldEndSession(true).say('Your Discogs account is not linked. Please use the Alexa App to link the account.')
+        return true
+    }
+    // otherwise fetch the random release
+    else {
+        var discogs = new DiscogsDataHelper();
+        discogs.requestRandomRelease(accessToken, function(err, obj) {
+          console.log(obj)
+          res.say(obj).send()
+        });
 
-  discogs.requestRandomRelease(function(err, obj) {
-    console.log(obj);
-    res.say(obj).send();
-  });
-
-  return false;
-}
-);
+        return false;
+    }
+});
 
 //hack to support custom utterances in utterance expansion string
 var utterancesMethod = app.utterances;
