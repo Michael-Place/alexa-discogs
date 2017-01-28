@@ -14,7 +14,7 @@ app.launch(function(req, res) {
 
 app.intent('discogsinfo', {
   'slots': { },
-  'utterances': ['{pick|choose|select|find} {me |} {a|an |} {album|record|vinyl}']
+  'utterances': ['{pick|choose|select|find} {me |} {a|an|some |} {album|record|vinyl}']
 },
 function(req, res) {
     // retrieve the access token from the session
